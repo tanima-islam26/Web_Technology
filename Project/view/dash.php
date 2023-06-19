@@ -1,0 +1,77 @@
+<?php 
+  session_start();
+  
+
+    if(isset($_SESSION['sname']))
+
+    {
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<style>
+table, th, td {
+  border:1px solid black;
+}
+td {
+  height: 500px;
+}
+tr {
+  height: 100px;
+}
+</style>
+<body>
+
+<table style="width:100%">
+  <tr>
+    <th><?php include '../controller/headerone.php' ?></th>
+  </tr>
+</table>
+<table style="width:100%">
+  <tr><td>
+  	<fieldset>
+  		<h1>Account</h1>
+  	</fieldset>
+  	<fieldset>
+  		
+  		<a href="seeprofile.php/">View Profile</a><br><br>
+  		
+  		<a href="logout.php/">Logout</a><br><br>
+      <a href="addProduct.php/">Buying Agent Task</a><br><br>
+
+  	</fieldset>
+    </td>
+    <td>
+    	<fieldset>
+    		<legend>Dashboard</legend>
+    	   <h1><a href="http://localhost:7882/lol/view/buyform.php">Buy From Vendor</a></h1>
+    	</fieldset>
+    </td>
+  </tr>
+</table>
+<table style="width:100%">
+  <tr>
+    <th><?php include '../controller/allfooter.php' ?></th>
+  </tr>
+</table>
+
+ <a href="dsboard.php" class="btn btn-primary">Back</a> 
+                   </div>
+                 </div>
+</body>
+</html>
+
+<?php
+
+    }
+
+    else{
+
+        echo "Please do Registration before login in";
+
+    }
+
+?>

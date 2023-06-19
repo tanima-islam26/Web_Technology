@@ -1,0 +1,155 @@
+<?php  
+
+include '../controller/DataController.php';
+
+$a=-1;
+$errorone="";
+$errortwo="";
+$errorthree="";
+$errorfour="";
+$errorfive="";
+$errorsix="";
+$errorseven="";
+ $message = '';  
+ $error = '';  
+ if(isset($_POST["submit"]))  
+ {  
+          if(empty($_POST["name"]))  
+           {  
+                $errorone = "Enter full name"; 
+           }
+           else
+           {
+               if (!preg_match("/^[a-zA-Z-' ]*$/",$_POST["name"])) 
+               {
+                    $errorone = "Enter namee correctly.";
+               }
+               else
+               {
+                    $errorone="";
+               }
+           }
+           if(empty($_POST["email"]))  
+           {  
+                $errortwo = "Enter email address"; 
+           }
+           else
+           {
+               if(!filter_var($_POST['email'],FILTER_VALIDATE_EMAIL))
+               {
+                    $errortwo="Email format is not validate";
+               }
+           }  
+      if(empty($_POST["un"]))  
+      {  
+           $errorthree = "Enter username";  
+      } 
+      if(empty($_POST["pass"]))  
+      {  
+           $errorfour = "Enter a password";  
+      }
+      else
+      {
+          $a=preg_match("/[@#$%]/i",$_POST["pass"]);
+
+               if($a==1)
+                {
+                    if(strlen($_POST["pass"])<8)
+                    {
+                         $errorfour = "New password length must be greater than 7";
+                     }
+                }
+                else
+                {
+                $errorfour = "New password must contain special character";
+                }
+      }
+      if(empty($_POST["Cpass"]))  
+      {  
+           $errorfive = "Confirm password field cannot be empty";  
+      } 
+      else
+          {
+               if(strcmp($_POST["Cpass"],$_POST["pass"])!=0)
+               {
+                    $errorfive="Not matched with new password. Please rewrite";
+               }
+          }
+      if(empty($_POST["gender"]))  
+      {  
+           $errorsix = "Gender cannot be empty";  
+      } 
+     if(empty($_POST["dob"]))  
+      {  
+           $errorseven = "Date of birth cannot be empty";  
+      }
+      if(empty($errorone) && empty($errortwo) && empty($errorthree) && empty($errorfour) && empty($errorfive) && empty($errorsix) && empty($errorseven))  
+      {  
+           if(file_exists('../controller/data.json'))  
+           {  
+                $current_data = file_get_contents('../controller/data.json');
+                $array_data = json_decode($current_data, true);  
+                $new_data = array(  
+                     'name'               =>     $_POST['name'],  
+                     'e-mail'          =>     $_POST["email"],  
+                     'username'     =>     $_POST["un"],  
+                     'gender'     =>     $_POST["gender"],  
+                     
+                     'passcode'    =>    $_POST["Cpass"]  
+                );  
+                $array_data[] = $new_data;  
+                $final_data = json_encode($array_data);
+                if(file_put_contents('./controller/data.json', $final_data))  
+                {  
+                    //header("Location:llogin.php");
+                     $message = "";  
+                }  
+           }  
+      }  
+ }   
+ ?>  
+ <!DOCTYPE html>  
+<html>  
+      <head>  
+           <title></title>  
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+      </head>  
+      <body>  
+           <br />  
+           <div class="container" style="width:500px;">  
+                <h3 align="">Registration</h3><br />                 
+                <form method="post">  
+                       
+                     <br />  
+                     <label>Name</label>  
+                     <input type="text" name="name" class="form-control" /><?php echo $errorone; ?><br />  
+                     <label>E-mail</label>
+                     <input type="text" name = "email" class="form-control" /><?php echo $errortwo; ?><br />
+                     <label>User Name</label>
+                     <input type="text" name = "un" class="form-control" /><?php echo $errorthree; ?><br />
+                     <label>Password</label>
+                     <input type="password" name = "pass" class="form-control" /><?php echo $errorfour; ?><br />
+                     <label>Confirm Password</label>
+                     <input type="password" name = "Cpass" class="form-control" /><?php echo $errorfive; ?><br />
+
+                    <fieldset>
+                    <legend>Gender</legend>
+                    <input type="radio" id="male" name="gender" value="male">
+                     <label for="male">Male</label>                     
+                     <input type="radio" id="female" name="gender" value="female">
+                     <label for="female">Female</label>
+                     <input type="radio" id="other" name="gender" value="other">
+                     <label for="other">Other</label><?php echo $errorsix; ?><br>
+
+                     
+                     
+                     <input type="submit" name="submit" value="submit" class="btn btn-info" /><br />                      
+                     
+                      
+                       
+                </form>  
+           </div>  
+           <br />  
+      </body>  
+ </html>  
